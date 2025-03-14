@@ -1,0 +1,18 @@
+/* General styles */
+body {
+    font-family: "Arial", sans-serif;
+    font-size: 14px;
+    color: #333;
+    line-height: 1.5;
+    margin: 20px;
+}
+
+pre {
+    background: #282c3432;
+    color: yellow;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-x: auto;
+    font-family: "Courier New", monospace;
+    /* Use monospace font for better readability */
+}

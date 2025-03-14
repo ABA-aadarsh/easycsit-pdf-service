@@ -1,0 +1,26 @@
+{
+  "name": "mdtopdfservice",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "Markdown to PDF service for my easycsit project. Provides api endpoint to convert markdown string into pdf, created pdf is uploaded in drive service and its link is provided",
+  "devDependencies": {
+    "@types/node": "^22.13.10"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "google-auth-library": "^9.15.1",
+    "googleapis": "^146.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "markdown-pdf": "^11.0.0"
+  }
+}
