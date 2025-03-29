@@ -87,6 +87,10 @@ img {
     display: flex;
     flex-direction: column;
     gap: 10px;
+    font-size: 20px !important;
+}
+.notes_qa h1, .notes_qa, h2  {
+    font-size: 18px;
 }
 .notes_qaIndex{
     color: #ff0100;
@@ -95,3 +99,18 @@ img {
     border-radius: 5px;
     margin-bottom: 5px;
 }
+table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 16px;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+  

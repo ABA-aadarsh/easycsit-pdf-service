@@ -3,7 +3,7 @@ dotenv.config();
 import jwt from "jsonwebtoken"
 export const authenticationMiddleware = async (req, res, next) => {
     try {
-        const authToken = req.cookies["authtoken"];
+        const authToken = req.cookies["auth-token"];
         if (!authToken) {
             return res.status(403).json({ message: "No auth token provided" });
         }

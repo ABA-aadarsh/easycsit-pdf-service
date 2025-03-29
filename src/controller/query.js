@@ -24,7 +24,7 @@ export const saveNewPDFIntoDatabase = async (data) => {
   */
   try {
     const newPDF = new PDF({
-      subjectCode: data.subjectCode,
+      subjectCode: String(data.subjectCode).toLowerCase(),
       name: data.name,
       type: data.type,
       driveId: data.driveId

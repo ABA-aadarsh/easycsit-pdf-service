@@ -8,7 +8,7 @@ const router = express.Router();
 // Profile route
 router.get("/profile", async (req, res) => {
     try {
-        const authToken = req.cookies["authtoken"];
+        const authToken = req.cookies["auth-token"];
         if (!authToken) {
             return res.status(403).json({ message: "No auth token provided" });
         }
@@ -29,10 +29,10 @@ router.post("/login", async (req, res) => {
                 { username },
                 process.env.JWT_SECRET
             );
-            res.cookie('authtoken', newToken, {
+            res.cookie('auth-token', newToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV === 'production',
-                maxAge: 3600000,
+                maxAge: 36000000,
             });
 
             return res.status(200).json({ status: "Logged in" });

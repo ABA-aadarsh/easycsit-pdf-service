@@ -115,6 +115,8 @@ export const createQuestionPaper = async (data) => {
     data.longQuestions = (await Promise.all(longQuestionProcessPromiseList)).map(x => String(x))
     data.shortQuestions = (await Promise.all(shortQuestionProcessPromiseList)).map(x => String(x))
 
+    const fullMarks = data.chooseFromLong * data.marksOf1LongQuestion + data.chooseFromShort + data.marksOf1ShortQuestion
+
     const longQuestionsHTMLString = "<ol>"+data.longQuestions.map(
         (q)=>(
             `<li class="question">${q}</li>`
@@ -134,12 +136,12 @@ export const createQuestionPaper = async (data) => {
     .replace("{{subjectCode}}", data.subjectCode)
     .replace("{{paperTitle}}", data.paperTitle)
     .replace("{{passMarks}}", data.passMarks)
-    .replace("{{fullMarks}}", data.chooseFromLong * data.marksOf1LongQuestion + data.chooseFromShort * data.marksof1ShortQuestion)
+    .replace("{{fullMarks}}", fullMarks)
     .replace("{{longQuestions.choose}}", data.chooseFromLong)
     .replace("{{longQuestionsMarksScheme}}", `${data.chooseFromLong} * ${data.marksOf1LongQuestion} = ${data.chooseFromLong * data.marksOf1LongQuestion}`)
     .replace("{{longQuestionsList}}", longQuestionsHTMLString)
     .replace("{{shortQuestions.choose}}", data.chooseFromShort)
-    .replace("{{shortQuestionsMarksScheme}}", `${data.chooseFromShort} * ${data.marksof1ShortQuestion} = ${data.chooseFromShort * data.marksof1ShortQuestion}`)
+    .replace("{{shortQuestionsMarksScheme}}", `${data.chooseFromShort} * ${data.marksOf1ShortQuestion} = ${data.chooseFromShort * data.marksOf1ShortQuestion}`)
     .replace("{{shortQuestionsList}}", shortQuestionsHTMLString)
 
     const browser = await puppeteer.launch();

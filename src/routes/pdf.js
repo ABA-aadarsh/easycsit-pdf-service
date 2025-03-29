@@ -2,10 +2,13 @@ import express from 'express';
 import { deletePDFFromDatabase, getPDFList, getQuestionsAndAnswersBySubjectCode, saveNewPDFIntoDatabase } from '../controller/query.js';
 import { createNote, createQuestionPaper } from '../controller/pdf.js';
 import { uploadToGoogleDrive, listPDFs, deleteFromGoogleDrive } from '../controller/drive.js';
+import multer from 'multer';
 
 const router = express.Router();
 
-router.post("/notes",  async (req, res) => {
+const multerUpload = multer()
+
+router.post("/qaNotes",  async (req, res) => {
     try {
         const body = req.body;
         /*
@@ -32,7 +35,7 @@ router.post("/notes",  async (req, res) => {
             type: "qaNotes",
             driveId: driveId
         })
-        return res.status(200).json({ driveId });
+        return res.status(200).json({ driveId, name: data.pdfName, subjectCode: data.subjectCode, type: "qaNotes" });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "not done" });
@@ -57,7 +60,7 @@ router.post("/question-paper", async (req, res) => {
         */
         const body = req.body;
         const data = {
-            ...data,
+            ...body,
             pdfName: `${body.subjectName} - ${body.paperTitle}`
         }
         const pdfBuffer = await createQuestionPaper(data);
@@ -68,7 +71,7 @@ router.post("/question-paper", async (req, res) => {
             type: "questionPaper",
             driveId: driveId
         })
-        return res.status(200).json({ driveId });
+        return res.status(200).json({ driveId, name: data.pdfName, subjectCode: data.subjectCode });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ message: "not done" });
@@ -99,7 +102,7 @@ router.get("/list", async (req,res) => {
     }
 })
 
-router.delete("/pdf/:id",  async (req, res) => {
+router.delete("/:id",  async (req, res) => {
     const { id } = req.params;
     if (!id) {
         return res.status(400).json({ success: false, message: "File ID is required." });
@@ -116,5 +119,28 @@ router.delete("/pdf/:id",  async (req, res) => {
         return res.status(500).json({ success: false, message: error.message });
     }
 });
+
+
+router.post("/questionPaper", multerUpload.single("file"), async (req,res)=>{
+    try {
+        const { name, subjectCode } = req.body;
+        const fileBuffer = req.file.buffer; // File as buffer
+        const driveId = await uploadToGoogleDrive(name, fileBuffer)
+        await saveNewPDFIntoDatabase(
+            {
+                subjectCode: subjectCode,
+                name: name,
+                driveId: driveId,
+                type: "questionPaper"
+            }
+        )
+        return res.status(200).json(
+            { driveId, name, subjectCode, type: "questionPaper"}
+        )
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success: false, message: error.message})
+    }
+})
 
 export default router;

@@ -12,7 +12,7 @@ import { connectDB } from "./controller/database.js";
 const app = Express()
 const portNumber = 8000
 
-app.use(cors({ origin: "*" }));
+app.use(cors({ origin: process.env.CORS_FRONTEND }));
 app.use(Express.json());
 connectDB();
 app.use(Express.json())
