@@ -143,4 +143,25 @@ router.post("/questionPaper", multerUpload.single("file"), async (req,res)=>{
     }
 })
 
+
+router.post("/questionPaperByDriveId", async (req,res)=>{
+    try {
+        const {name, subjectCode, driveId} = req.body
+        await saveNewPDFIntoDatabase(
+            {
+                subjectCode,
+                name,
+                driveId,
+                type: "questionPaper"
+            }
+        )
+        return res.status(200).json(
+            { driveId, name, subjectCode, type: "questionPaper"}
+        )
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({success: false, message: error.message})
+    }
+})
+
 export default router;
